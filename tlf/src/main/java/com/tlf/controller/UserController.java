@@ -99,6 +99,13 @@ public class UserController {
         User user = userService.getUserById(id);
         return SysResult.success(user);
     }
+    @PutMapping("/resetPassword/{id}")
+    public SysResult resetPassword(@PathVariable Integer id){
+
+        userService.resetPassword(id);
+
+        return SysResult.success();
+    }
 
     /**
      * 业务需求: 实现用户更新操作

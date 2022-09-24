@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Autowired(required = false)
     private UserMapper userMapper;
 
     @Override
@@ -151,6 +151,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectOneById(Integer id) {
         return userMapper.selectOneById(id);
+    }
+
+    @Override
+    public void resetPassword(Integer id) {
+        String passwd = DigestUtils.md5DigestAsHex(("123456").getBytes());
+        User user = userMapper.selectOneById(id);
+        user.setPassword(passwd);
+        userMapper.updateById(user);
     }
 
 

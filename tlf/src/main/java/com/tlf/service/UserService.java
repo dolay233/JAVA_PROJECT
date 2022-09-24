@@ -25,4 +25,6 @@ public interface UserService {
 
 
     User selectOneById(Integer id);
+
+    void resetPassword(Integer id);
 }
