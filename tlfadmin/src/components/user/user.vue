@@ -42,6 +42,7 @@
              <template slot-scope="scope">
                 <el-button type="primary" icon="el-icon-edit" size="small" @click="updateUserBtn(scope.row)"></el-button>
                 <el-button type="danger" icon="el-icon-delete" size="small" @click="deleteUser(scope.row)"></el-button>
+                <el-button type="warning" icon="el-icon-plus" size="small" @click="resetPassword(scope.row)"></el-button>
              </template>
 
            </el-table-column>
@@ -277,6 +278,22 @@
            this.updateDialogVisible = false
            this.getUserList()
         })
+      },
+      async resetPassword(user){
+        //1.消息确认框
+        const result =  await this.$confirm('此操作将重置用户“'+user.username+'”的密码 , 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(error => error)
+
+        //如果确认  confirm  如果取消 cancel
+        if(result !== 'confirm'){
+          return this.$message.info("取消重置密码")
+        }
+        const {data: result2} = await this.$http.put(`/user/resetPassword/${user.id}`)
+        if(result2.status !== 200) return this.$message.error("密码重置失败")
+        this.$message.success("密码重置成功！")
       },
       async deleteUser(user){
          //1.消息确认框
